@@ -2,6 +2,7 @@
 API for waifuku
 
 # Set up
+create config file
 npm i
 npm start
 
