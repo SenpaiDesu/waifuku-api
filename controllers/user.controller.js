@@ -2,6 +2,7 @@ const db = require('../models');
 
 const signUp = async (req, res) => {
   try {
+    req.body.isAdmin = false; 
     const user = await db.users.create(req.body);
     return res.status(200).json({
       token: user.genToken()
@@ -27,7 +28,8 @@ const updateProfile = async (req, res) => {
     if (!req.user.comparePassword(currentPassword))
       return res.status(422).json({ error: 'Wrong current password' });
     for (let field in req.body)
-      req.user[field] = req.body[field];
+      if (field != 'isAdmin' && field != 'createdAt')  
+        req.user[field] = req.body[field];
     return res.status(200).json(await req.user.save());
   } catch (error) {
     return res.status(400).json(error);
